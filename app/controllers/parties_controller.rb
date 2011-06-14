@@ -2,8 +2,13 @@ class PartiesController < ApplicationController
   # GET /parties
   # GET /parties.json
   def index
+    longitude = params[:longitude]
+    latitude = params[:latitude]
+    if longitude && latitude
+    @parties = Party.order("((parties.longitude - #{longitude})*(parties.longitude - #{longitude}))+((parties.latitude - #{latitude})*(parties.latitude - #{latitude})) ASC")
+    else
     @parties = Party.all
-
+    end
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @parties }
